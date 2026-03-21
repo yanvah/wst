@@ -1,0 +1,45 @@
+{
+  "name": "vscode-wst",
+  "displayName": "WST - Well Structured Type",
+  "description": "Syntax highlighting and error checking for .wst files",
+  "version": "0.1.0",
+  "engines": { "vscode": "^1.75.0" },
+  "categories": ["Programming Languages"],
+"main": "./extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "wst",
+        "aliases": ["WST", "wst"],
+        "extensions": [".wst"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "wst",
+        "scopeName": "source.wst",
+        "path": "./syntaxes/wst.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "WST",
+      "properties": {
+        "wst.executablePath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the wst executable. Leave empty to auto-detect."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.75.0",
+    "typescript": "^5.0.0"
+  }
+}

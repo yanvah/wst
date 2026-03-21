@@ -1,0 +1,10 @@
+enum Color { Red, Green, Blue }
+
+enum Status { Active, Inactive #deprecated }
+
+private enum InternalCode { Ok, Fail }
+
+struct Point {
+    x = flt64 #required,
+    y = flt64 #required,
+}

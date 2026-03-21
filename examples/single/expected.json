@@ -1,0 +1,490 @@
+{
+  "enforcers": [
+    {
+      "key": "optional_mode",
+      "value": "implicit"
+    }
+  ],
+  "imports": [],
+  "definitions": [
+    {
+      "kind": "Enum",
+      "data": {
+        "name": "Priority",
+        "cases": [
+          {
+            "name": "Low",
+            "tags": []
+          },
+          {
+            "name": "Medium",
+            "tags": []
+          },
+          {
+            "name": "High",
+            "tags": []
+          },
+          {
+            "name": "Critical",
+            "tags": [
+              {
+                "namespace": null,
+                "name": "deprecated",
+                "value": true
+              }
+            ]
+          },
+          {
+            "name": "Blocked",
+            "tags": [
+              {
+                "namespace": null,
+                "name": "banned",
+                "value": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "Variant",
+      "data": {
+        "name": "Payload",
+        "cases": [
+          {
+            "name": "Text",
+            "ty": {
+              "type": "Primitive",
+              "of": "String"
+            },
+            "tags": []
+          },
+          {
+            "name": "Count",
+            "ty": {
+              "type": "Primitive",
+              "of": "Int32"
+            },
+            "tags": []
+          },
+          {
+            "name": "Data",
+            "ty": {
+              "type": "Vec",
+              "of": {
+                "type": "Primitive",
+                "of": "String"
+              }
+            },
+            "tags": []
+          },
+          {
+            "name": "Legacy",
+            "ty": {
+              "type": "Primitive",
+              "of": "String"
+            },
+            "tags": [
+              {
+                "namespace": null,
+                "name": "deprecated",
+                "value": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "Struct",
+      "data": {
+        "name": "Record",
+        "fields": [
+          {
+            "name": "id",
+            "ty": {
+              "type": "Primitive",
+              "of": "Int64"
+            },
+            "tags": [
+              {
+                "namespace": null,
+                "name": "required",
+                "value": true
+              }
+            ]
+          },
+          {
+            "name": "ref_code",
+            "ty": {
+              "type": "Primitive",
+              "of": "Int32"
+            },
+            "tags": []
+          },
+          {
+            "name": "quantity",
+            "ty": {
+              "type": "Primitive",
+              "of": "Uin64"
+            },
+            "tags": []
+          },
+          {
+            "name": "score",
+            "ty": {
+              "type": "Primitive",
+              "of": "Flt64"
+            },
+            "tags": [
+              {
+                "namespace": null,
+                "name": "nullable",
+                "value": true
+              },
+              {
+                "namespace": null,
+                "name": "required",
+                "value": true
+              },
+              {
+                "namespace": "myorg",
+                "name": "precision",
+                "value": 2.0
+              }
+            ]
+          },
+          {
+            "name": "active",
+            "ty": {
+              "type": "Primitive",
+              "of": "Boolean"
+            },
+            "tags": [
+              {
+                "namespace": null,
+                "name": "required",
+                "value": true
+              }
+            ]
+          },
+          {
+            "name": "label",
+            "ty": {
+              "type": "Primitive",
+              "of": "String"
+            },
+            "tags": [
+              {
+                "namespace": null,
+                "name": "required",
+                "value": true
+              }
+            ]
+          },
+          {
+            "name": "note",
+            "ty": {
+              "type": "Primitive",
+              "of": "String"
+            },
+            "tags": []
+          },
+          {
+            "name": "lookup",
+            "ty": {
+              "type": "Map",
+              "of": {
+                "key": "String",
+                "value": {
+                  "type": "Primitive",
+                  "of": "String"
+                }
+              }
+            },
+            "tags": []
+          },
+          {
+            "name": "flags",
+            "ty": {
+              "type": "Vec",
+              "of": {
+                "type": "Primitive",
+                "of": "Boolean"
+              }
+            },
+            "tags": []
+          },
+          {
+            "name": "priority",
+            "ty": {
+              "type": "Named",
+              "of": "Priority"
+            },
+            "tags": [
+              {
+                "namespace": null,
+                "name": "required",
+                "value": true
+              }
+            ]
+          },
+          {
+            "name": "payload",
+            "ty": {
+              "type": "Named",
+              "of": "Payload"
+            },
+            "tags": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "Struct",
+      "data": {
+        "name": "RecordSummary",
+        "copies": [
+          {
+            "op": "exclude",
+            "base": "Record",
+            "exclude": [
+              "note",
+              "lookup",
+              "flags",
+              "payload"
+            ]
+          }
+        ],
+        "fields": []
+      }
+    },
+    {
+      "kind": "Struct",
+      "data": {
+        "name": "ExtendedRecord",
+        "copies": [
+          {
+            "op": "named",
+            "name": "Record"
+          }
+        ],
+        "fields": [
+          {
+            "name": "created_by",
+            "ty": {
+              "type": "Primitive",
+              "of": "String"
+            },
+            "tags": [
+              {
+                "namespace": null,
+                "name": "required",
+                "value": true
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "kind": "Enum",
+      "data": {
+        "name": "ApiError",
+        "cases": [
+          {
+            "name": "NotFound",
+            "tags": []
+          },
+          {
+            "name": "Forbidden",
+            "tags": []
+          }
+        ]
+      }
+    },
+    {
+      "kind": "Protocol",
+      "data": {
+        "name": "RecordApi",
+        "endpoints": [
+          {
+            "name": "/records/get",
+            "tags": [],
+            "request": {
+              "type": "Named",
+              "of": "Record"
+            },
+            "response": {
+              "type": "Named",
+              "of": "Record"
+            },
+            "error": {
+              "type": "Named",
+              "of": "ApiError"
+            }
+          },
+          {
+            "name": "/records/list",
+            "tags": [],
+            "request": {
+              "type": "Named",
+              "of": "Record"
+            },
+            "response": {
+              "type": "Vec",
+              "of": {
+                "type": "Named",
+                "of": "RecordSummary"
+              }
+            },
+            "error": null
+          },
+          {
+            "name": "/records/create",
+            "tags": [
+              {
+                "namespace": "myorg",
+                "name": "auth",
+                "value": true
+              },
+              {
+                "namespace": "myorg",
+                "name": "version",
+                "value": 2.0
+              }
+            ],
+            "request": {
+              "type": "Named",
+              "of": "Record"
+            },
+            "response": {
+              "type": "Named",
+              "of": "Record"
+            },
+            "error": {
+              "type": "Named",
+              "of": "ApiError"
+            }
+          },
+          {
+            "name": "/records/legacy",
+            "tags": [
+              {
+                "namespace": null,
+                "name": "deprecated",
+                "value": true
+              }
+            ],
+            "request": {
+              "type": "Named",
+              "of": "Record"
+            },
+            "response": {
+              "type": "Named",
+              "of": "Record"
+            },
+            "error": null
+          }
+        ]
+      }
+    },
+    {
+      "kind": "Struct",
+      "data": {
+        "name": "InternalAudit",
+        "fields": [
+          {
+            "name": "checksum",
+            "ty": {
+              "type": "Primitive",
+              "of": "String"
+            },
+            "tags": [
+              {
+                "namespace": null,
+                "name": "required",
+                "value": true
+              }
+            ]
+          },
+          {
+            "name": "processed",
+            "ty": {
+              "type": "Primitive",
+              "of": "Boolean"
+            },
+            "tags": [
+              {
+                "namespace": null,
+                "name": "required",
+                "value": true
+              }
+            ]
+          }
+        ],
+        "private": true
+      }
+    },
+    {
+      "kind": "Const",
+      "data": {
+        "name": "DEFAULT_ERROR",
+        "value": {
+          "kind": "enum_case",
+          "ty": "ApiError",
+          "case": "NotFound"
+        }
+      }
+    },
+    {
+      "kind": "Const",
+      "data": {
+        "name": "DEFAULT_RECORD",
+        "value": {
+          "kind": "struct",
+          "ty": "Record",
+          "fields": [
+            {
+              "name": "id",
+              "value": {
+                "kind": "number",
+                "value": 1.0
+              }
+            },
+            {
+              "name": "score",
+              "value": {
+                "kind": "number",
+                "value": 0.0
+              }
+            },
+            {
+              "name": "active",
+              "value": {
+                "kind": "bool",
+                "value": true
+              }
+            },
+            {
+              "name": "label",
+              "value": {
+                "kind": "str",
+                "value": "default"
+              }
+            },
+            {
+              "name": "priority",
+              "value": {
+                "kind": "enum_case",
+                "ty": "Priority",
+                "case": "Low"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

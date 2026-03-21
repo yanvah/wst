@@ -1,0 +1,127 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "WST",
+  "scopeName": "source.wst",
+  "fileTypes": ["wst"],
+  "patterns": [
+    { "include": "#comment" },
+    { "include": "#string" },
+    { "include": "#number" },
+    { "include": "#boolean" },
+    { "include": "#enforcer" },
+    { "include": "#import" },
+    { "include": "#at-op" },
+    { "include": "#copy-modifier" },
+    { "include": "#metavar" },
+    { "include": "#const-keyword" },
+    { "include": "#keyword" },
+    { "include": "#builtin-tag" },
+    { "include": "#custom-tag-ns" },
+    { "include": "#tag" },
+    { "include": "#primitive-type" },
+    { "include": "#type-name" }
+  ],
+  "repository": {
+    "comment": {
+      "name": "comment.line.double-slash.wst",
+      "match": "//.*$"
+    },
+    "string": {
+      "name": "string.quoted.double.wst",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        { "name": "constant.character.escape.wst", "match": "\\\\." }
+      ]
+    },
+    "number": {
+      "name": "constant.numeric.wst",
+      "match": "-?\\b\\d+(\\.\\d+)?\\b"
+    },
+    "boolean": {
+      "name": "constant.language.boolean.wst",
+      "match": "\\b(true|false)\\b"
+    },
+    "enforcer": {
+      "comment": "e.g. !case=snake;",
+      "match": "(!)(\\w+)(=)(\\w+)(;)",
+      "captures": {
+        "1": { "name": "keyword.operator.enforcer.wst" },
+        "2": { "name": "keyword.other.enforcer-key.wst" },
+        "3": { "name": "punctuation.separator.key-value.wst" },
+        "4": { "name": "constant.language.enforcer-value.wst" },
+        "5": { "name": "punctuation.terminator.statement.wst" }
+      }
+    },
+    "import": {
+      "comment": "@import ...",
+      "match": "(@)(import)\\b",
+      "captures": {
+        "1": { "name": "keyword.operator.at.wst" },
+        "2": { "name": "keyword.control.import.wst" }
+      }
+    },
+    "copy-modifier": {
+      "name": "keyword.other.copy.wst",
+      "match": "\\^copy\\b"
+    },
+    "at-op": {
+      "comment": "@exclude and similar compile-time @-ops",
+      "match": "(@)(exclude)\\b",
+      "captures": {
+        "1": { "name": "keyword.operator.at.wst" },
+        "2": { "name": "keyword.other.at-op.wst" }
+      }
+    },
+    "metavar": {
+      "comment": "$identifier metavariables used in assertions",
+      "match": "(\\$)(\\w+)",
+      "captures": {
+        "1": { "name": "keyword.operator.metavar.wst" },
+        "2": { "name": "variable.other.metavar.wst" }
+      }
+    },
+    "const-keyword": {
+      "name": "keyword.control.wst",
+      "match": "\\bconst\\b"
+    },
+    "keyword": {
+      "name": "keyword.declaration.wst",
+      "match": "\\b(enum|variant|struct|protocol|private|copy|assertion|assert|for|in|haskey|null)\\b"
+    },
+    "builtin-tag": {
+      "comment": "#deprecated, #banned, #required, #optional",
+      "match": "(#)(deprecated|banned|required|optional|nullable)\\b",
+      "captures": {
+        "1": { "name": "punctuation.definition.tag.wst" },
+        "2": { "name": "support.type.tag.builtin.wst" }
+      }
+    },
+    "custom-tag-ns": {
+      "comment": "#namespace:name",
+      "match": "(#)(\\w+)(:)(\\w+)",
+      "captures": {
+        "1": { "name": "punctuation.definition.tag.wst" },
+        "2": { "name": "entity.other.attribute-name.namespace.wst" },
+        "3": { "name": "punctuation.separator.namespace.wst" },
+        "4": { "name": "entity.other.attribute-name.localname.wst" }
+      }
+    },
+    "tag": {
+      "comment": "#name",
+      "match": "(#)(\\w+)",
+      "captures": {
+        "1": { "name": "punctuation.definition.tag.wst" },
+        "2": { "name": "entity.other.attribute-name.tag.wst" }
+      }
+    },
+    "primitive-type": {
+      "name": "support.type.primitive.wst",
+      "match": "\\b(int32|int64|uin64|flt64|boolean|string|vec|map)\\b"
+    },
+    "type-name": {
+      "name": "entity.name.type.wst",
+      "match": "\\b[A-Z][A-Za-z0-9_]*\\b"
+    }
+  }
+}

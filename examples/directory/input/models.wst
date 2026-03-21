@@ -1,0 +1,16 @@
+// Named import: Color and Status are referenced by name in generated output
+@import ./types.wst { Color, Status };
+
+// Copy import: Point is inlined into this file's generated output
+@import ./types.wst ^copy { Point };
+
+struct Shape {
+    copy Point,
+    color = Color #required,
+    status = Status,
+    label = string #required,
+}
+
+struct ShapePreview {
+    copy @exclude(Shape, ["label"]),
+}

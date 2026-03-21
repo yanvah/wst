@@ -1,0 +1,87 @@
+!optional_mode=implicit;
+
+// ── Enums ─────────────────────────────────────────────────────────────────────
+
+enum Priority {
+    Low,
+    Medium,
+    High,
+    Critical #deprecated,
+    Blocked #banned,
+}
+
+// ── Variants ──────────────────────────────────────────────────────────────────
+
+variant Payload {
+    Text = string,
+    Count = int32,
+    Data = vec<string>,
+    Legacy = string #deprecated,
+}
+
+// ── Structs with full tag coverage ────────────────────────────────────────────
+
+struct Record {
+    id = int64 #required,
+    ref_code = int32,
+    quantity = uin64,
+    score = flt64 [
+        #nullable
+        #required
+        #myorg:precision=2
+    ],
+    active = boolean #required,
+    label = string #required,
+    note = string,
+    lookup = map<string, string>,
+    flags = vec<boolean>,
+    priority = Priority #required,
+    payload = Payload,
+}
+
+// ── Struct copy and @exclude ───────────────────────────────────────────────────
+
+struct RecordSummary {
+    copy @exclude(Record, ["note", "lookup", "flags", "payload"]),
+}
+
+struct ExtendedRecord {
+    copy Record,
+    created_by = string #required,
+}
+
+// ── Protocol with inline tags, multi-line tags, error types ───────────────────
+
+enum ApiError {
+    NotFound,
+    Forbidden,
+}
+
+protocol RecordApi {
+    "/records/get" <Record, Record !ApiError>,
+    "/records/list" <Record, vec<RecordSummary>>,
+    "/records/create" [
+        #myorg:auth=true
+        #myorg:version=2
+    ] <Record, Record !ApiError>,
+    "/records/legacy" #deprecated <Record, Record>,
+}
+
+// ── Private type ──────────────────────────────────────────────────────────────
+
+private struct InternalAudit {
+    checksum = string #required,
+    processed = boolean #required,
+}
+
+// ── Constants ─────────────────────────────────────────────────────────────────
+
+const DEFAULT_ERROR = ApiError.NotFound
+
+const DEFAULT_RECORD = Record {
+    id = 1,
+    score = 0.0,
+    active = true,
+    label = "default",
+    priority = Priority.Low,
+}
