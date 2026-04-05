@@ -38,11 +38,7 @@ wst -i ./types/ -f ts -o ./generated/
 
 ## VSCode Extension
 
-Syntax highlighting and inline error checking are available via the bundled VSCode extension:
-
-```sh
-./install-vscode-ext.sh
-```
+Syntax highlighting and inline error checking are available via the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=yanvah.vscode-wst).
 
 ## Contributing
 
