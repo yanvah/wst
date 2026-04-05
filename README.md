@@ -2,6 +2,60 @@
 
 WST is a language for defining types that compile to TypeScript and Rust.
 
+## Installation
+
+**From source** (requires [Rust](https://rustup.rs)):
+
+```sh
+git clone https://github.com/yanvah/wst
+cd wst
+cargo install --path .
+```
+
+## Usage
+
+```sh
+# Validate only (no output written)
+wst -i schema.wst
+
+# Compile a single file to TypeScript
+wst -i schema.wst -f ts -o schema.ts
+
+# Compile a single file to Rust
+wst -i schema.wst -f rust -o schema.rs
+
+# Compile a directory of .wst files
+wst -i ./types/ -f ts -o ./generated/
+```
+
+### Formats
+
+| Flag | Output |
+|------|--------|
+| `-f ts` | TypeScript (`.ts`) |
+| `-f rust` | Rust (`.rs`) |
+| `-f json` | JSON AST (default) |
+
+## VSCode Extension
+
+Syntax highlighting and inline error checking are available via the bundled VSCode extension:
+
+```sh
+./install-vscode-ext.sh
+```
+
+## Contributing
+
+1. Fork the repo and create a branch
+2. Make changes with tests: `cargo test`
+3. Open a pull request
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+---
+
 ## Primitives
 
 | WST | TypeScript | Rust |

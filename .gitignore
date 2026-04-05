@@ -1,1 +1,9 @@
 /target
+.DS_Store
+*.swp
+*.swo
+.env
+.env.*
+vscode-wst/node_modules/
+vscode-wst/out/
+vscode-wst/*.vsix
